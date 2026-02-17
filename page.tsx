@@ -16,7 +16,7 @@ import {
   Landmark,
 } from "lucide-react";
 import { Accordion } from "@/components/accordion";
-import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Input, Label, Textarea, Seperator, cn } from "@/components/ui";
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Input, Label, Textarea, cn } from "@/components/ui";
 
 const logoSrc = "/logo.jpg"; // placed in /public
 
