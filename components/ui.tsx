@@ -125,3 +125,9 @@ export function Label({
     <label className={cn("text-sm font-medium text-slate-700", className)} {...props} />
   );
 }
+export function Separator({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn("h-px w-full bg-slate-200", className)} {...props} />;
+}
