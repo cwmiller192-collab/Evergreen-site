@@ -433,7 +433,7 @@ export default function Page() {
               <Card key={t.name} className="rounded-3xl">
                 <CardContent className="pt-6">
                   <p className="text-sm leading-relaxed text-slate-600">“{t.quote}”</p>
-                  <Separator className="my-4" />
+                  <div className="my-4 h-px w-full bg-slate-200" />
                   <div className="text-sm font-medium">{t.name}</div>
                   <div className="text-xs text-slate-500">Client testimonial</div>
                 </CardContent>
