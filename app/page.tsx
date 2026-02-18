@@ -156,16 +156,20 @@ export default function Page() {
           </nav>
 
          <div className="flex items-center gap-2">
-  <a
-    href="tel:8889633096"
-    className="hidden md:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-  >
-    <Phone className="h-4 w-4 text-brand-600" />
-    888-963-3096
-  </a>
+ <a
+  href="tel:8889633096"
+  className="hidden md:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+>
+  <Phone className="h-4 w-4 text-brand-600" />
+  888-963-3096
+</a>
 
-  <Button className="rounded-xl" onClick={() => scrollToId("contact")}>
-    Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
+<Button
+  className="rounded-xl"
+  onClick={() => scrollToId("contact")}
+>
+  Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
+</Button>
   </Button>
 </div>
 </a>
