@@ -467,7 +467,7 @@ export default function Page() {
 <section className="py-24 bg-slate-50">
   <div className="max-w-6xl mx-auto px-6">
     <h2 className="text-3xl font-semibold mb-4 text-center">
-      Recent Investor Deals
+      Recent Loan Closings
     </h2>
 
     <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
