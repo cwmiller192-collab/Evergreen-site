@@ -534,7 +534,7 @@ export default function Page() {
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <Phone className="h-4 w-4 text-brand-600" /> Phone
                   </div>
-                  <div className="mt-1 text-sm text-slate-600">(555) 123-4567</div>
+                  <div className="mt-1 text-sm text-slate-600">(888) 963-3096</div>
                 </div>
                 <div className="rounded-3xl border border-slate-200 bg-white p-5">
                   <div className="text-sm font-medium">Hours</div>
