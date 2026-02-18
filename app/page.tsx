@@ -48,16 +48,24 @@ function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 
-function digitsOnly(value: string) {
-  return value.replace(/[^0-9]/g, "");
-}
 function formatPhone(value: string) {
-  const d = digitsOnly(value).slice(0, 10);
+  let d = digitsOnly(value);
+
+  // If user includes US country code (1), drop it
+  if (d.length === 11 && d.startsWith("1")) {
+    d = d.slice(1);
+  }
+
+  // Keep only 10 digits max after normalization
+  d = d.slice(0, 10);
+
   const parts = [d.slice(0, 3), d.slice(3, 6), d.slice(6, 10)].filter(Boolean);
+
   if (parts.length === 0) return "";
   if (parts.length === 1) return `(${parts[0]}`;
   if (parts.length === 2) return `(${parts[0]}) ${parts[1]}`;
   return `(${parts[0]}) ${parts[1]}-${parts[2]}`;
+}
 }
 
 function scrollToId(id: string) {
