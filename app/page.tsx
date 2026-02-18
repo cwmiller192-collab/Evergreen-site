@@ -205,7 +205,7 @@ export default function Page() {
               </h1>
 
               <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600 md:text-lg">
-                Evergreen Equity Partners helps investors and owners secure financing for income-producing properties.
+                Evergreen Equity Partners provides investors and owners secure financing for income-producing properties.
                 Fast, straightforward qualification and a process built around speed, clarity, and certainty.
               </p>
 
