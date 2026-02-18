@@ -447,7 +447,46 @@ export default function Page() {
             ))}
           </div>
         </section>
+{/* RECENT DEALS */}
+<section className="py-24 bg-slate-50">
+  <div className="max-w-6xl mx-auto px-6">
+    <h2 className="text-3xl font-semibold mb-4 text-center">
+      Recent Deals We've Helped Close
+    </h2>
+    <p className="text-center text-slate-600 mb-14 max-w-2xl mx-auto">
+      Real investors. Real properties. Real closings.
+    </p>
 
+    <div className="grid md:grid-cols-3 gap-8">
+      {[
+        {
+          title: "Single-Family Rental Refinance",
+          location: "Baltimore, MD",
+          details: "Loan Amount: $325,000 • DSCR Program • 30-Year Fixed",
+        },
+        {
+          title: "Small Retail Property Purchase",
+          location: "Richmond, VA",
+          details: "Loan Amount: $1,150,000 • Owner-Occupied",
+        },
+        {
+          title: "Duplex Cash-Out Refinance",
+          location: "Orlando, FL",
+          details: "Loan Amount: $410,000 • Closed in 21 Days",
+        },
+      ].map((deal) => (
+        <div
+          key={deal.title}
+          className="rounded-2xl border border-slate-200 bg-white p-8 shadow-sm"
+        >
+          <div className="text-lg font-semibold mb-2">{deal.title}</div>
+          <div className="text-sm text-slate-500 mb-4">{deal.location}</div>
+          <div className="text-sm text-slate-600">{deal.details}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
         {/* FAQ */}
         <section id="faq" className="mx-auto max-w-6xl px-4 pt-16 md:px-6 md:pt-24">
           <motion.div
