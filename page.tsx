@@ -115,10 +115,16 @@ export default function Page() {
         <div className="absolute -top-24 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-brand-600/10 blur-3xl" />
         <div className="absolute bottom-0 right-[-140px] h-[420px] w-[420px] rounded-full bg-brand-600/10 blur-3xl" />
       </div>
-
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+         <a
+  href="tel:14433226673"
+  className="hidden md:flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-[#1E6B34]"
+>
+  <Phone className="h-4 w-4" />
+  (443) 322-6673
+</a>
           <button
             onClick={() => scrollToId("top")}
             className="flex items-center gap-3 rounded-xl px-2 py-1 hover:bg-slate-50"
