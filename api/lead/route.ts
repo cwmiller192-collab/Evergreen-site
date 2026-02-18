@@ -87,8 +87,13 @@ export async function POST(req: Request) {
       replyTo: body.email,
     });
 
-    if (error) {
-      return NextResponse.json({ ok: false, error }, { status: 500 });
+if (error) {
+  console.error("RESEND_ERROR:", error);
+  const message =
+    (error as any)?.message ||
+    (error as any)?.error?.message ||
+    JSON.stringify(error);
+  return NextResponse.json({ ok: false, error: message }, { status: 500});
     }
 
     return NextResponse.json({ ok: true });
