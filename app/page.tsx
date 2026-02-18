@@ -646,7 +646,7 @@ function LeadFormCard({
             value={form.fullName}
             onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))}
             className={cn(err.fullName && "border-red-300")}
-            placeholder="Chris Miller"
+            placeholder="John Smith"
             autoComplete="name"
           />
           {err.fullName ? <p className="text-xs text-red-700">{err.fullName}</p> : null}
