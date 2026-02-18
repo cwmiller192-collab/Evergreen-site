@@ -465,58 +465,48 @@ export default function Page() {
     <h2 className="text-3xl font-semibold mb-4 text-center">
       Recent Investor Deals
     </h2>
-    <p className="text-center text-slate-600 mb-14 max-w-2xl mx-auto">
-      Relatable scenarios we help close every week — rentals, small mixed-use, and local owner-occupied.
-    </p>
 
     <div className="grid md:grid-cols-3 gap-8">
-      {[
-        {
-          title: "Single-Family Rental Refinance",
-          location: "Baltimore, MD",
-          details: "DSCR • $325k • 30-year fixed",
-          img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=80",
-          alt: "Small single-family home",
-        },
-        {
-          title: "Duplex Purchase (First Investment)",
-          location: "Orlando, FL",
-          details: "DSCR • $410k • closed in 21 days",
-          img: "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?auto=format&fit=crop&w=1200&q=80",
-          alt: "Duplex home exterior",
-        },
-        {
-          title: "Small Retail / Office Refinance",
-          location: "Richmond, VA",
-          details: "Commercial • $1.15MM • owner-occupied",
-          img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-          alt: "Small commercial building",
-        },
-      ].map((deal) => (
-        <div
-          key={deal.title}
-          className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm"
-        >
-          <div className="aspect-[16/10] w-full bg-slate-100">
-            <img
-              src={deal.img}
-              alt={deal.alt}
-              className="h-full w-full object-cover"
-              loading="lazy"
-            />
-          </div>
 
-          <div className="p-6">
-            <div className="text-lg font-semibold mb-1">{deal.title}</div>
-            <div className="text-sm text-slate-500 mb-3">{deal.location}</div>
-            <div className="text-sm text-slate-600">{deal.details}</div>
-          </div>
+      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <img
+          src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=80"
+          alt="Single family home"
+          className="h-56 w-full object-cover"
+        />
+        <div className="p-6">
+          <div className="text-lg font-semibold">Single-Family Rental Refinance</div>
+          <div className="text-sm text-slate-500 mb-2">Baltimore, MD</div>
+          <div className="text-sm text-slate-600">DSCR • $325k • 30-year fixed</div>
         </div>
-      ))}
-    </div>
+      </div>
 
-    <div className="text-xs text-slate-500 mt-8 text-center">
-      Examples shown for illustration. Terms vary by borrower, property, and program.
+      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <img
+          src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?auto=format&fit=crop&w=1200&q=80"
+          alt="Duplex"
+          className="h-56 w-full object-cover"
+        />
+        <div className="p-6">
+          <div className="text-lg font-semibold">Duplex Purchase (First Investment)</div>
+          <div className="text-sm text-slate-500 mb-2">Orlando, FL</div>
+          <div className="text-sm text-slate-600">DSCR • $410k • Closed in 21 Days</div>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <img
+          src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
+          alt="Small commercial"
+          className="h-56 w-full object-cover"
+        />
+        <div className="p-6">
+          <div className="text-lg font-semibold">Small Retail Refinance</div>
+          <div className="text-sm text-slate-500 mb-2">Richmond, VA</div>
+          <div className="text-sm text-slate-600">Commercial • $1.15MM • Owner-Occupied</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
