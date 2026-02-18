@@ -155,15 +155,19 @@ export default function Page() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <Button variant="outline" className="hidden rounded-xl md:inline-flex" onClick={() => scrollToId("contact")}>
-              Get a Quote
-              <a
-  href="tel:8889633096"
-  className="hidden md:flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-[#1E6B34]"
->
-  <Phone className="h-4 w-4" />
-  888-963-3096
+         <div className="flex items-center gap-2">
+  <a
+    href="tel:8889633096"
+    className="hidden md:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+  >
+    <Phone className="h-4 w-4 text-brand-600" />
+    888-963-3096
+  </a>
+
+  <Button className="rounded-xl" onClick={() => scrollToId("contact")}>
+    Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
+  </Button>
+</div>
 </a>
             </Button>
             <Button className="rounded-xl" onClick={() => scrollToId("contact")}>
@@ -511,7 +515,7 @@ export default function Page() {
   </div>
 </section>
         
-</section>
+
         {/* FAQ */}
         <section id="faq" className="mx-auto max-w-6xl px-4 pt-16 md:px-6 md:pt-24">
           <motion.div
@@ -598,7 +602,11 @@ export default function Page() {
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <Phone className="h-4 w-4 text-brand-600" /> Phone
                   </div>
-                  <div className="mt-1 text-sm text-slate-600">(555) 123-4567</div>
+                  <div className="mt-1 text-sm text-slate-600">
+  <a href="tel:8889633096" className="hover:underline">
+    888-963-3096
+  </a>
+</div>
                 </div>
                 <div className="rounded-3xl border border-slate-200 bg-white p-5">
                   <div className="text-sm font-medium">Hours</div>
@@ -846,16 +854,16 @@ function LeadFormCard({
         <ArrowRight className="h-4 w-4" />
       </Button>
 
-      <p className="text-xs text-slate-500">
-        Prefer email? Send your details to <span className="font-medium">contact@evgequity.com</span>.
-        <div className="mt-3 text-sm text-slate-600">
-  Or call us at{" "}
-  <a
-    href="tel:8889633096"
-    className="font-medium text-[#1E6B34] hover:underline"
-  >
-    888-963-3096
-  </a>
+      <div className="text-xs text-slate-500">
+  Prefer email? Send your details to{" "}
+  <span className="font-medium">contact@evgequity.com</span>.
+  <div className="mt-3 text-sm text-slate-600">
+    Or call us at{" "}
+    <a href="tel:8889633096" className="font-medium text-[#1E6B34] hover:underline">
+      888-963-3096
+    </a>
+    .
+  </div>
 </div>
       </p>
     </form>
