@@ -174,7 +174,7 @@ export default function Page() {
               Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
-        </div>
+     
       </header>
 
       {/* Hero */}
