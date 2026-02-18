@@ -796,6 +796,15 @@ function LeadFormCard({
 
       <p className="text-xs text-slate-500">
         Prefer email? Send your details to <span className="font-medium">contact@evgequity.com</span>.
+        <div className="mt-3 text-sm text-slate-600">
+  Or call us at{" "}
+  <a
+    href="tel:8889633096"
+    className="font-medium text-[#1E6B34] hover:underline"
+  >
+    888-963-3096
+  </a>
+</div>
       </p>
     </form>
   );
