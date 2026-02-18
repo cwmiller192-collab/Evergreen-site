@@ -158,6 +158,13 @@ export default function Page() {
           <div className="flex items-center gap-2">
             <Button variant="outline" className="hidden rounded-xl md:inline-flex" onClick={() => scrollToId("contact")}>
               Get a Quote
+              <a
+  href="tel:8889633096"
+  className="hidden md:flex items-center gap-2 text-sm font-medium text-slate-700 hover:text-[#1E6B34]"
+>
+  <Phone className="h-4 w-4" />
+  888-963-3096
+</a>
             </Button>
             <Button className="rounded-xl" onClick={() => scrollToId("contact")}>
               Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
