@@ -448,8 +448,8 @@ export default function Page() {
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {[
-              { quote: "Clear communication and fast feedback—exactly what you want when timing matters.", name: "Real estate investor" },
-              { quote: "Straightforward checklist and no runaround. We always knew the next step.", name: "Owner-operator" },
+              { quote: "Chris and his team were amazing to work with! So glad we found you guys.", name: "Real estate investor" },
+              { quote: "Straightforward checklist and no runaround. Heather was very helpful.", name: "Owner-operator" },
               { quote: "They understood the deal and provided options that matched our plan.", name: "Sponsor" },
             ].map((t) => (
               <Card key={t.name} className="rounded-3xl">
