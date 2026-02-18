@@ -865,7 +865,7 @@ function LeadFormCard({
     .
   </div>
 </div>
-      </p>
+     
     </form>
   );
 }
