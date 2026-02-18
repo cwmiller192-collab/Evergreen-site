@@ -510,6 +510,9 @@ export default function Page() {
     </div>
   </div>
 </section>
+        <section style={{ background: "yellow", padding: "40px" }}>
+  <h2>IF YOU SEE THIS, SECTION IS RENDERING</h2>
+</section>
         {/* FAQ */}
         <section id="faq" className="mx-auto max-w-6xl px-4 pt-16 md:px-6 md:pt-24">
           <motion.div
