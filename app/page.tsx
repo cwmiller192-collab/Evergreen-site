@@ -48,6 +48,10 @@ function isEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 
+function digitsOnly(value: string) {
+  return value.replace(/[^0-9]/g, "");
+}
+
 function formatPhone(value: string) {
   let d = digitsOnly(value);
 
@@ -65,7 +69,6 @@ function formatPhone(value: string) {
   if (parts.length === 1) return `(${parts[0]}`;
   if (parts.length === 2) return `(${parts[0]}) ${parts[1]}`;
   return `(${parts[0]}) ${parts[1]}-${parts[2]}`;
-}
 }
 
 function scrollToId(id: string) {
