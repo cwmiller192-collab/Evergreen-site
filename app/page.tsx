@@ -533,7 +533,7 @@ export default function Page() {
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <Mail className="h-4 w-4 text-brand-600" /> Email
                   </div>
-                  <div className="mt-1 text-sm text-slate-600">chris@evgequity.com</div>
+                  <div className="mt-1 text-sm text-slate-600">contact@evgequity.com</div>
                 </div>
                 <div className="rounded-3xl border border-slate-200 bg-white p-5">
                   <div className="flex items-center gap-2 text-sm font-medium">
@@ -788,7 +788,7 @@ function LeadFormCard({
       </Button>
 
       <p className="text-xs text-slate-500">
-        Prefer email? Send your details to <span className="font-medium">chris@evgequity.com</span>.
+        Prefer email? Send your details to <span className="font-medium">contact@evgequity.com</span>.
       </p>
     </form>
   );
