@@ -1,5 +1,1 @@
-// other content...
-
-// recent deals section ends
-
-// Removed stray closing section tag
+<PUT COMPLETE CONTENT OF THE FILE WITHOUT YELLOW BACKGROUND SECTION HERE>
