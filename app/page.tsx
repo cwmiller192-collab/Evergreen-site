@@ -508,7 +508,9 @@ export default function Page() {
           <div className="text-lg font-semibold">Small Retail Refinance</div>
           <div className="text-sm text-slate-500 mb-2">Richmond, VA</div>
           <div className="text-sm text-slate-600">Commercial • $1.15MM • Owner-Occupied</div>
-             <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+                  </div>
+      </div>             
+      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
         <img
           src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80"
           alt="Small townhome rental"
