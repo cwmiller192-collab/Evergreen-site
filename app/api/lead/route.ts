@@ -22,24 +22,47 @@ function escapeHtml(s: string) {
     .replaceAll("'", "&#039;");
 }
 
+function digitsOnly(value: string) {
+  return (value || "").replace(/[^0-9]/g, "");
+}
+
+function isEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((value || "").trim());
+}
+
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as LeadForm;
 
-    // Basic server-side validation
-    if (!body?.fullName || !body?.email || !body?.propertyState || !body?.consent) {
-      return NextResponse.json({ ok: false, error: "Missing fields" }, { status: 400 });
+    // --- Basic server-side validation (keep light) ---
+    if (
+      !body?.fullName?.trim() ||
+      !isEmail(body?.email) ||
+      !body?.propertyState?.trim() ||
+      body?.consent !== true
+    ) {
+      return NextResponse.json({ ok: false, error: "Missing/invalid fields" }, { status: 400 });
     }
 
-    // --- Resend email ---
+    // Optional: normalize phone
+    const phoneDigits = digitsOnly(body.phone);
+    const normalizedPhone = phoneDigits.length >= 10 ? body.phone : "";
+
+    // --- ENV ---
     const resendApiKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.LEAD_TO_EMAIL || "contact@evglending.com";
     const fromEmail = process.env.LEAD_FROM_EMAIL || "Evergreen Leads <onboarding@resend.dev>";
 
+    const fubApiKey = process.env.FUB_API_KEY; // optional
+
     if (!resendApiKey) {
-      return NextResponse.json({ ok: false, error: "Missing RESEND_API_KEY env var" }, { status: 500 });
+      return NextResponse.json(
+        { ok: false, error: "Missing RESEND_API_KEY env var" },
+        { status: 500 }
+      );
     }
 
+    // --- Email (Resend) ---
     const resend = new Resend(resendApiKey);
 
     const subject = `New Lead: ${body.loanType} — ${body.propertyState} — ${body.fullName}`;
@@ -51,7 +74,7 @@ export async function POST(req: Request) {
           ${[
             ["Full Name", body.fullName],
             ["Email", body.email],
-            ["Phone", body.phone || "(none)"],
+            ["Phone", normalizedPhone || "(none)"],
             ["Loan Type", body.loanType],
             ["Loan Amount", body.loanAmount || "(not provided)"],
             ["Property State", body.propertyState],
@@ -64,7 +87,9 @@ export async function POST(req: Request) {
                 <td style="padding:6px 10px; border:1px solid #e5e7eb; font-weight:600; background:#f9fafb;">${escapeHtml(
                   String(k)
                 )}</td>
-                <td style="padding:6px 10px; border:1px solid #e5e7eb;">${escapeHtml(String(v))}</td>
+                <td style="padding:6px 10px; border:1px solid #e5e7eb;">${escapeHtml(
+                  String(v)
+                )}</td>
               </tr>`
             )
             .join("")}
@@ -75,7 +100,7 @@ export async function POST(req: Request) {
       </div>
     `;
 
-    const sendResult = await resend.emails.send({
+    const resendResult = await resend.emails.send({
       from: fromEmail,
       to: [toEmail],
       subject,
@@ -83,20 +108,20 @@ export async function POST(req: Request) {
       replyTo: body.email,
     });
 
-    if (sendResult.error) {
-      return NextResponse.json({ ok: false, error: sendResult.error }, { status: 500 });
+    if (resendResult.error) {
+      return NextResponse.json({ ok: false, error: resendResult.error }, { status: 500 });
     }
 
-    // --- Follow Up Boss (direct integration) ---
-    const fubApiKey = process.env.FUB_API_KEY;
-
+    // --- Follow Up Boss (optional integration) ---
+    // We DO NOT fail the request if FUB errors — we log it and still return ok:true.
     if (fubApiKey) {
       try {
         const parts = body.fullName.trim().split(/\s+/);
         const firstName = parts[0] || "";
         const lastName = parts.slice(1).join(" ");
 
-        const fubRes = await fetch("https://api.followupboss.com/v1/people", {
+        // 1) Create person
+        const createRes = await fetch("https://api.followupboss.com/v1/people", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -107,34 +132,43 @@ export async function POST(req: Request) {
             lastName,
             source: "Website Inquiry",
             emails: [{ value: body.email }],
-            phones: body.phone ? [{ value: body.phone }] : [],
+            phones: normalizedPhone ? [{ value: normalizedPhone }] : [],
             tags: ["Website Lead"],
-            const createdPerson = await fubRes.json();
-
-if (createdPerson?.id) {
-  await fetch(`https://api.followupboss.com/v1/people/${createdPerson.id}/notes`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization:
-        "Basic " + Buffer.from(`${fubApiKey}:`).toString("base64"),
-    },
-    body: JSON.stringify({
-      body:
-        `Loan Type: ${body.loanType}\n` +
-        `Loan Amount: ${body.loanAmount || "(not provided)"}\n` +
-        `Property State: ${body.propertyState}\n` +
-        `Timeline: ${body.timeline}\n\n` +
-        `Message: ${body.message || "(none)"}`
-    }),
-  });
-}           
           }),
         });
 
-        if (!fubRes.ok) {
-          const errText = await fubRes.text();
-          console.error("FUB error:", fubRes.status, errText);
+        const createText = await createRes.text();
+        let createdPerson: any = null;
+        try {
+          createdPerson = createText ? JSON.parse(createText) : null;
+        } catch {
+          createdPerson = null;
+        }
+
+        if (!createRes.ok) {
+          console.error("FUB create person failed:", createRes.status, createText);
+        } else if (createdPerson?.id) {
+          // 2) Add note (this is the correct place for your "Loan Type / Timeline / Message" details)
+          const noteBody =
+            `Loan Type: ${body.loanType}\n` +
+            `Loan Amount: ${body.loanAmount || "(not provided)"}\n` +
+            `Property State: ${body.propertyState}\n` +
+            `Timeline: ${body.timeline}\n\n` +
+            `Message: ${body.message || "(none)"}`;
+
+          const noteRes = await fetch(`https://api.followupboss.com/v1/people/${createdPerson.id}/notes`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic " + Buffer.from(`${fubApiKey}:`).toString("base64"),
+            },
+            body: JSON.stringify({ body: noteBody }),
+          });
+
+          if (!noteRes.ok) {
+            const noteErr = await noteRes.text();
+            console.error("FUB note failed:", noteRes.status, noteErr);
+          }
         }
       } catch (err) {
         console.error("FUB integration failed:", err);
@@ -143,6 +177,9 @@ if (createdPerson?.id) {
 
     return NextResponse.json({ ok: true });
   } catch (e: any) {
-    return NextResponse.json({ ok: false, error: e?.message || "Unknown error" }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: e?.message || "Unknown error" },
+      { status: 500 }
+    );
   }
 }
