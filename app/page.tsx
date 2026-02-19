@@ -127,51 +127,49 @@ export default function Page() {
         <div className="absolute bottom-0 right-[-140px] h-[420px] w-[420px] rounded-full bg-brand-600/10 blur-3xl" />
       </div>
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
-          <button
-            onClick={() => scrollToId("top")}
-            className="flex items-center gap-3 rounded-xl px-2 py-1 hover:bg-slate-50"
-            aria-label="Go to top"
-          >
-            <img src={logoSrc} alt="Evergreen Equity Partners" className="h-10 w-auto" />
-            <div className="leading-tight text-left">
-              <div className="text-sm font-semibold">Evergreen Equity Partners</div>
-              <div className="text-xs text-slate-500">Commercial & DSCR Lending</div>
-            </div>
-          </button>
+     {/* Header */}
+<header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
+  <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+    <button
+      onClick={() => scrollToId("top")}
+      className="flex items-center gap-3 rounded-xl px-2 py-1 hover:bg-slate-50"
+      aria-label="Go to top"
+    >
+      <img src={logoSrc} alt="Evergreen Equity Partners" className="h-10 w-auto" />
+      <div className="leading-tight text-left">
+        <div className="text-sm font-semibold">Evergreen Equity Partners</div>
+        <div className="text-xs text-slate-500">Commercial & DSCR Lending</div>
+      </div>
+    </button>
 
-          <nav className="hidden items-center gap-1 md:flex">
-            {[
-              ["Solutions", "solutions"],
-              ["Process", "process"],
-              ["FAQ", "faq"],
-              ["Contact", "contact"],
-            ].map(([label, id]) => (
-              <Button key={id} variant="ghost" className="rounded-xl" onClick={() => scrollToId(id)}>
-                {label}
-              </Button>
-            ))}
-          </nav>
+    <nav className="hidden items-center gap-1 md:flex">
+      {[
+        ["Solutions", "solutions"],
+        ["Process", "process"],
+        ["FAQ", "faq"],
+        ["Contact", "contact"],
+      ].map(([label, id]) => (
+        <Button key={id} variant="ghost" className="rounded-xl" onClick={() => scrollToId(id)}>
+          {label}
+        </Button>
+      ))}
+    </nav>
 
-<div className="flex items-center gap-2">
-  <a
-    href="tel:8889633096"
-    className="hidden md:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#1E6B34]"
-  >
-    <Phone className="h-4 w-4" />
-    888-963-3096
-  </a>
+    <div className="flex items-center gap-2">
+      <a
+        href="tel:8889633096"
+        className="hidden md:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#1E6B34]"
+      >
+        <Phone className="h-4 w-4" />
+        888-963-3096
+      </a>
 
-  <Button className="rounded-xl" onClick={() => scrollToId("contact")}>
-    Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
-  </Button>
-</div>        
-          
-     
-      </header>
-
+      <Button className="rounded-xl" onClick={() => scrollToId("contact")}>
+        Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
+      </Button>
+    </div>
+  </div>
+</header>
       {/* Hero */}
       <main id="top">
         <section className="mx-auto max-w-6xl px-4 pt-14 md:px-6 md:pt-20">
