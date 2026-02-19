@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 
 type LeadForm = {
   fullName: string;
@@ -13,173 +12,134 @@ type LeadForm = {
   consent: boolean;
 };
 
-function escapeHtml(s: string) {
-  return s
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+function isEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
 }
 
 function digitsOnly(value: string) {
-  return (value || "").replace(/[^0-9]/g, "");
+  return String(value || "").replace(/[^0-9]/g, "");
 }
 
-function isEmail(value: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((value || "").trim());
+function normalizePhone(value: string) {
+  let d = digitsOnly(value);
+  if (d.length === 11 && d.startsWith("1")) d = d.slice(1);
+  if (d.length !== 10) return ""; // only accept valid US 10-digit for FUB
+  return d;
+}
+
+function splitName(fullName: string) {
+  const parts = String(fullName || "")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  const firstName = parts[0] || "";
+  const lastName = parts.slice(1).join(" ");
+  return { firstName, lastName };
+}
+
+function buildLeadNote(body: LeadForm) {
+  return [
+    `Loan Type: ${body.loanType}`,
+    `Loan Amount: ${body.loanAmount || "(not provided)"}`,
+    `Property State: ${body.propertyState}`,
+    `Timeline: ${body.timeline}`,
+    `Message: ${body.message || "(none)"}`,
+  ].join("\n");
+}
+
+async function fetchWithTimeout(url: string, init: RequestInit, ms = 8000) {
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), ms);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(t);
+  }
 }
 
 export async function POST(req: Request) {
   try {
     const body = (await req.json()) as LeadForm;
 
-    // --- Basic server-side validation (keep light) ---
-    if (
-      !body?.fullName?.trim() ||
-      !isEmail(body?.email) ||
-      !body?.propertyState?.trim() ||
-      body?.consent !== true
-    ) {
-      return NextResponse.json({ ok: false, error: "Missing/invalid fields" }, { status: 400 });
+    // --- light server-side validation ---
+    if (!body?.fullName?.trim()) {
+      return NextResponse.json({ ok: false, error: "Missing fullName" }, { status: 400 });
+    }
+    if (!isEmail(body?.email)) {
+      return NextResponse.json({ ok: false, error: "Invalid email" }, { status: 400 });
+    }
+    if (!body?.propertyState?.trim()) {
+      return NextResponse.json({ ok: false, error: "Missing propertyState" }, { status: 400 });
+    }
+    if (!body?.consent) {
+      return NextResponse.json({ ok: false, error: "Consent required" }, { status: 400 });
     }
 
-    // Optional: normalize phone
-    const phoneDigits = digitsOnly(body.phone);
-    const normalizedPhone = phoneDigits.length >= 10 ? body.phone : "";
+    const fubApiKey = process.env.FUB_API_KEY;
+    if (!fubApiKey) {
+      // If you’d rather “not block” form submissions when FUB is down, change this to status 200 with ok:true.
+      return NextResponse.json({ ok: false, error: "Missing FUB_API_KEY" }, { status: 500 });
+    }
 
-    // --- ENV ---
-    const resendApiKey = process.env.RESEND_API_KEY;
-    const toEmail = process.env.LEAD_TO_EMAIL || "contact@evglending.com";
-    const fromEmail = process.env.LEAD_FROM_EMAIL || "Evergreen Leads <onboarding@resend.dev>";
+    const { firstName, lastName } = splitName(body.fullName);
+    const phone = normalizePhone(body.phone);
+    const note = buildLeadNote(body);
 
-    const fubApiKey = process.env.FUB_API_KEY; // optional
+    // FUB recommends sending leads via /v1/events (not /v1/people).  [oai_citation:1‡Follow Up Boss](https://docs.followupboss.com/reference/send-in-a-lead)
+    const eventType = process.env.FUB_EVENT_TYPE || "Website Inquiry";
+    const eventSource = process.env.FUB_EVENT_SOURCE || "Evergreen Equity Website";
 
-    if (!resendApiKey) {
+    const eventPayload: any = {
+      type: eventType,
+      source: eventSource,
+      // “person” is the contact being created/updated
+      person: {
+        firstName,
+        lastName,
+        emails: [{ value: body.email }],
+        ...(phone ? { phones: [{ value: phone }] } : {}),
+        tags: ["Website Lead"],
+      },
+      // Event detail — we keep it simple & readable
+      message: note,
+    };
+
+    const auth = Buffer.from(`${fubApiKey}:`).toString("base64");
+
+    const fubRes = await fetchWithTimeout("https://api.followupboss.com/v1/events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Basic ${auth}`,
+      },
+      body: JSON.stringify(eventPayload),
+    });
+
+    const fubText = await fubRes.text();
+
+    if (!fubRes.ok) {
+      // Log enough detail to debug quickly in Vercel logs
+      console.error("FUB error:", fubRes.status, fubText);
       return NextResponse.json(
-        { ok: false, error: "Missing RESEND_API_KEY env var" },
-        { status: 500 }
+        { ok: false, error: "FUB request failed", fubStatus: fubRes.status, fubBody: fubText },
+        { status: 502 }
       );
     }
 
-    // --- Email (Resend) ---
-    const resend = new Resend(resendApiKey);
+    // If you want, you can inspect/return parsed JSON
+    let fubJson: any = null;
+    try {
+      fubJson = fubText ? JSON.parse(fubText) : null;
+    } catch {
+      // ignore parse errors; FUB may not always return JSON
+    }
 
-    const subject = `New Lead: ${body.loanType} — ${body.propertyState} — ${body.fullName}`;
-
-    const html = `
-      <div style="font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; line-height: 1.45;">
-        <h2 style="margin:0 0 12px;">New Lead Submission</h2>
-        <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-          ${[
-            ["Full Name", body.fullName],
-            ["Email", body.email],
-            ["Phone", normalizedPhone || "(none)"],
-            ["Loan Type", body.loanType],
-            ["Loan Amount", body.loanAmount || "(not provided)"],
-            ["Property State", body.propertyState],
-            ["Timeline", body.timeline],
-            ["Message", body.message || "(none)"],
-          ]
-            .map(
-              ([k, v]) => `
-              <tr>
-                <td style="padding:6px 10px; border:1px solid #e5e7eb; font-weight:600; background:#f9fafb;">${escapeHtml(
-                  String(k)
-                )}</td>
-                <td style="padding:6px 10px; border:1px solid #e5e7eb;">${escapeHtml(
-                  String(v)
-                )}</td>
-              </tr>`
-            )
-            .join("")}
-        </table>
-        <p style="margin:14px 0 0; color:#6b7280; font-size:12px;">
-          Sent from the Evergreen Equity Partners website.
-        </p>
-      </div>
-    `;
-
-    const resendResult = await resend.emails.send({
-      from: fromEmail,
-      to: [toEmail],
-      subject,
-      html,
-      replyTo: body.email,
+    return NextResponse.json({
+      ok: true,
+      fub: { ok: true, status: fubRes.status, response: fubJson || fubText || null },
     });
-
-    if (resendResult.error) {
-      return NextResponse.json({ ok: false, error: resendResult.error }, { status: 500 });
-    }
-
-    // --- Follow Up Boss (optional integration) ---
-    // We DO NOT fail the request if FUB errors — we log it and still return ok:true.
-    if (fubApiKey) {
-      try {
-        const parts = body.fullName.trim().split(/\s+/);
-        const firstName = parts[0] || "";
-        const lastName = parts.slice(1).join(" ");
-
-        // 1) Create person
-        const createRes = await fetch("https://api.followupboss.com/v1/people", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic " + Buffer.from(`${fubApiKey}:`).toString("base64"),
-          },
-          body: JSON.stringify({
-            firstName,
-            lastName,
-            source: "Website Inquiry",
-            emails: [{ value: body.email }],
-            phones: normalizedPhone ? [{ value: normalizedPhone }] : [],
-            tags: ["Website Lead"],
-          }),
-        });
-
-        const createText = await createRes.text();
-        let createdPerson: any = null;
-        try {
-          createdPerson = createText ? JSON.parse(createText) : null;
-        } catch {
-          createdPerson = null;
-        }
-
-        if (!createRes.ok) {
-          console.error("FUB create person failed:", createRes.status, createText);
-        } else if (createdPerson?.id) {
-          // 2) Add note (this is the correct place for your "Loan Type / Timeline / Message" details)
-          const noteBody =
-            `Loan Type: ${body.loanType}\n` +
-            `Loan Amount: ${body.loanAmount || "(not provided)"}\n` +
-            `Property State: ${body.propertyState}\n` +
-            `Timeline: ${body.timeline}\n\n` +
-            `Message: ${body.message || "(none)"}`;
-
-          const noteRes = await fetch(`https://api.followupboss.com/v1/people/${createdPerson.id}/notes`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Basic " + Buffer.from(`${fubApiKey}:`).toString("base64"),
-            },
-            body: JSON.stringify({ body: noteBody }),
-          });
-
-          if (!noteRes.ok) {
-            const noteErr = await noteRes.text();
-            console.error("FUB note failed:", noteRes.status, noteErr);
-          }
-        }
-      } catch (err) {
-        console.error("FUB integration failed:", err);
-      }
-    }
-
-    return NextResponse.json({ ok: true });
   } catch (e: any) {
-    return NextResponse.json(
-      { ok: false, error: e?.message || "Unknown error" },
-      { status: 500 }
-    );
+    console.error("Lead route error:", e);
+    return NextResponse.json({ ok: false, error: e?.message || "Unknown error" }, { status: 500 });
   }
 }
