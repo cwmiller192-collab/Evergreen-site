@@ -486,14 +486,14 @@ export default function Page() {
 
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
         <img
-          src="https://images.unsplash.com/photo-1560448204-603b3fc33ddc?auto=format&fit=crop&w=1200&q=80"
+          src="/deals/DSCR OCNJ.jpg"          
           alt="Duplex"
           className="h-56 w-full object-cover"
         />
         <div className="p-6">
-          <div className="text-lg font-semibold">Duplex Purchase (First Investment)</div>
-          <div className="text-sm text-slate-500 mb-2">Orlando, FL</div>
-          <div className="text-sm text-slate-600">DSCR • $410k • Closed in 21 Days</div>
+          <div className="text-lg font-semibold">Refinance</div>
+          <div className="text-sm text-slate-500 mb-2">Ocean City, NJ </div>
+          <div className="text-sm text-slate-600">DSCR • $1.4MM • Closed in 21 Days</div>
         </div>
       </div>
 
