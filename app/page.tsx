@@ -466,92 +466,135 @@ export default function Page() {
 {/* RECENT DEALS */}
 <section className="py-24 bg-slate-50">
   <div className="max-w-6xl mx-auto px-6">
-    <h2 className="text-3xl font-semibold mb-4 text-center">
-      Recent Loan Closings
-    </h2>
+    <h2 className="text-3xl font-semibold mb-4 text-center">Recent Loan Closings</h2>
 
     <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
-      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-        <img
-          src="/deals/Baltimore DSCR.jpg"          
-          alt="DSCR 1-4"
-          className="h-56 w-full object-cover"
-        />
+      {/* Deal 1 */}
+      <div className="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+        <div className="relative aspect-[16/10] w-full bg-slate-100">
+          <img
+            src="/deals/Baltimore DSCR.jpg"
+            alt="DSCR 1-4"
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-900 shadow-sm">
+            ✅ Closed
+          </div>
+        </div>
         <div className="p-6">
-          <div className="text-lg font-semibold">Single-Family Rental Refinance</div>
-          <div className="text-sm text-slate-500 mb-2">Baltimore, MD</div>
-          <div className="text-sm text-slate-600">DSCR • $325k • 30-year fixed</div>
+          <div className="text-lg font-semibold leading-snug">Single-Family Rental Refinance</div>
+          <div className="mt-1 text-sm text-slate-500">Baltimore, MD</div>
+          <div className="mt-3 text-sm text-slate-600">DSCR • $325k • 30-year fixed</div>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-        <img
-          src="/deals/DSCR OCNJ.jpg"          
-          alt="Duplex"
-          className="h-56 w-full object-cover"
-        />
+      {/* Deal 2 */}
+      <div className="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+        <div className="relative aspect-[16/10] w-full bg-slate-100">
+          <img
+            src="/deals/DSCR OCNJ.jpg"
+            alt="Duplex"
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-900 shadow-sm">
+            ✅ Closed
+          </div>
+        </div>
         <div className="p-6">
-          <div className="text-lg font-semibold">Refinance</div>
-          <div className="text-sm text-slate-500 mb-2">Ocean City, NJ </div>
-          <div className="text-sm text-slate-600">DSCR • $1.4MM • Closed in 21 Days</div>
+          <div className="text-lg font-semibold leading-snug">Refinance</div>
+          <div className="mt-1 text-sm text-slate-500">Ocean City, NJ</div>
+          <div className="mt-3 text-sm text-slate-600">DSCR • $1.4MM • Closed in 21 Days</div>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-        <img
-          src="/deals/Retail FLorida.jpg"          
-          alt="Commercial Office"
-          className="h-56 w-full object-cover"
-        />
+      {/* Deal 3 */}
+      <div className="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+        <div className="relative aspect-[16/10] w-full bg-slate-100">
+          <img
+            src="/deals/Retail FLorida.jpg"
+            alt="Commercial Office"
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-900 shadow-sm">
+            ✅ Closed
+          </div>
+        </div>
         <div className="p-6">
-          <div className="text-lg font-semibold">Office purchase</div>
-          <div className="text-sm text-slate-500 mb-2">Sarasota, FL</div>
-          <div className="text-sm text-slate-600">Commercial • $450k • Owner-Occupied</div>
-                  </div>
-      </div>             
-      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-        <img
-          src="/deals/Hight MF.jpg"          
-          alt="Multifamily"
-          className="h-56 w-full object-cover"
-        />
-        <div className="p-6">
-          <div className="text-lg font-semibold">Multifamily Purchase</div>
-          <div className="text-sm text-slate-500 mb-2">Ocean City, NJ</div>
-          <div className="text-sm text-slate-600">DSCR • $2.5MM • Purchase </div>
+          <div className="text-lg font-semibold leading-snug">Office Purchase</div>
+          <div className="mt-1 text-sm text-slate-500">Sarasota, FL</div>
+          <div className="mt-3 text-sm text-slate-600">Commercial • $450k • Owner-Occupied</div>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-        <img
-          src="/deals/Stello Foods.jpg"          
-          alt="Mixed-use"
-          className="h-56 w-full object-cover"
-        />
+      {/* Deal 4 */}
+      <div className="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+        <div className="relative aspect-[16/10] w-full bg-slate-100">
+          <img
+            src="/deals/Hight MF.jpg"
+            alt="Multifamily"
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-900 shadow-sm">
+            ✅ Closed
+          </div>
+        </div>
         <div className="p-6">
-          <div className="text-lg font-semibold">Office + Warehouse</div>
-          <div className="text-sm text-slate-500 mb-2">Pittsburgh, PA</div>
-          <div className="text-sm text-slate-600">$800k • Closed in 18 days</div>
+          <div className="text-lg font-semibold leading-snug">Multifamily Purchase</div>
+          <div className="mt-1 text-sm text-slate-500">Ocean City, NJ</div>
+          <div className="mt-3 text-sm text-slate-600">DSCR • $2.5MM • Purchase</div>
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
-        <img
-          src="/deals/abates pizza.jpg"          
-          alt="Small local business storefront"
-          className="h-56 w-full object-cover"
-        />
-        <div className="p-6">
-          <div className="text-lg font-semibold">Owner-Occupied Small Business Refi</div>
-          <div className="text-sm text-slate-500 mb-2">New Haven, CT</div>
-          <div className="text-sm text-slate-600">Commercial • $780k • Lowered payment</div>
+      {/* Deal 5 */}
+      <div className="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+        <div className="relative aspect-[16/10] w-full bg-slate-100">
+          <img
+            src="/deals/Stello Foods.jpg"
+            alt="Mixed-use"
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-900 shadow-sm">
+            ✅ Closed
+          </div>
         </div>
-      </div>   
+        <div className="p-6">
+          <div className="text-lg font-semibold leading-snug">Office + Warehouse</div>
+          <div className="mt-1 text-sm text-slate-500">Pittsburgh, PA</div>
+          <div className="mt-3 text-sm text-slate-600">$800k • Closed in 18 days</div>
+        </div>
+      </div>
 
+      {/* Deal 6 */}
+      <div className="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-md">
+        <div className="relative aspect-[16/10] w-full bg-slate-100">
+          <img
+            src="/deals/abates pizza.jpg"
+            alt="Small local business storefront"
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-900 shadow-sm">
+            ✅ Closed
+          </div>
+        </div>
+        <div className="p-6">
+          <div className="text-lg font-semibold leading-snug">Owner-Occupied Small Business Refi</div>
+          <div className="mt-1 text-sm text-slate-500">New Haven, CT</div>
+          <div className="mt-3 text-sm text-slate-600">Commercial • $780k • Lowered payment</div>
+        </div>
+      </div>
+    </div>
+
+    <div className="text-xs text-slate-500 mt-10 text-center">
+      Examples shown for illustration. Terms vary by borrower, property, and program.
     </div>
   </div>
-</section>
-        
+</section>        
 
         {/* FAQ */}
         <section id="faq" className="mx-auto max-w-6xl px-4 pt-16 md:px-6 md:pt-24">
