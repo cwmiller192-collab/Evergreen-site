@@ -466,8 +466,15 @@ export default function Page() {
 {/* RECENT DEALS */}
 <section className="py-24 bg-slate-50">
   <div className="max-w-6xl mx-auto px-6">
-    <h2 className="text-3xl font-semibold mb-4 text-center">Recent Loan Closings</h2>
+   <div className="text-center mb-6">
+  <div className="inline-flex items-center rounded-full bg-[#1E6B34]/10 px-4 py-2 text-sm font-semibold text-[#1E6B34]">
+    $8.2MM+ Closed in the Last 90 Days
+  </div>
+</div>
 
+<h2 className="text-3xl font-semibold mb-4 text-center">
+  Recent Loan Closings
+</h2>
     <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
       {/* Deal 1 */}
       <div className="group rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-md">
