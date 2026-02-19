@@ -217,8 +217,24 @@ export default function Page() {
                   Explore loan options
                 </Button>
               </div>
+<div className="mt-8 flex flex-wrap items-center gap-6 text-sm text-slate-600">
+  <div className="flex items-center gap-2">
+    <span className="font-semibold text-[#1E6B34]">Since 2008</span>
+    <span>Serving real estate investors</span>
+  </div>
 
-              <div className="mt-7 grid gap-3 sm:grid-cols-3">
+  <div className="h-4 w-px bg-slate-300" />
+
+  <div>
+    Direct lender 
+  </div>
+
+  <div className="h-4 w-px bg-slate-300" />
+
+  <div>
+    Repeat investor client base
+  </div>
+</div>              <div className="mt-7 grid gap-3 sm:grid-cols-3">
                 {[
                   { icon: <Timer className="h-4 w-4" />, title: "Fast turnarounds", desc: "Clear next steps within 24–48 hrs." },
                   { icon: <Calculator className="h-4 w-4" />, title: "Investor friendly", desc: "DSCR-focused options." },
