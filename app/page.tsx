@@ -158,9 +158,9 @@ export default function Page() {
 <div className="flex items-center gap-2">
   <a
     href="tel:8889633096"
-    className="hidden md:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+    className="hidden md:flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-[#1E6B34]"
   >
-    <Phone className="h-4 w-4 text-brand-600" />
+    <Phone className="h-4 w-4" />
     888-963-3096
   </a>
 
@@ -168,7 +168,6 @@ export default function Page() {
     Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
   </Button>
 </div>
-
         
             <Button className="rounded-xl" onClick={() => scrollToId("contact")}>
               Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
