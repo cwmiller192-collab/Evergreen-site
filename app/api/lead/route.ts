@@ -109,16 +109,26 @@ export async function POST(req: Request) {
             emails: [{ value: body.email }],
             phones: body.phone ? [{ value: body.phone }] : [],
             tags: ["Website Lead"],
-            notes: [
-              {
-                body:
-                  `Loan Type: ${body.loanType}\n` +
-                  `Loan Amount: ${body.loanAmount || "(not provided)"}\n` +
-                  `Property State: ${body.propertyState}\n` +
-                  `Timeline: ${body.timeline}\n\n` +
-                  `Message: ${body.message || "(none)"}`,
-              },
-            ],
+            const createdPerson = await fubRes.json();
+
+if (createdPerson?.id) {
+  await fetch(`https://api.followupboss.com/v1/people/${createdPerson.id}/notes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization:
+        "Basic " + Buffer.from(`${fubApiKey}:`).toString("base64"),
+    },
+    body: JSON.stringify({
+      body:
+        `Loan Type: ${body.loanType}\n` +
+        `Loan Amount: ${body.loanAmount || "(not provided)"}\n` +
+        `Property State: ${body.propertyState}\n` +
+        `Timeline: ${body.timeline}\n\n` +
+        `Message: ${body.message || "(none)"}`
+    }),
+  });
+}           
           }),
         });
 
