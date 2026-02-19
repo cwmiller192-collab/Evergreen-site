@@ -529,7 +529,7 @@ export default function Page() {
           className="h-56 w-full object-cover"
         />
         <div className="p-6">
-          <div className="text-lg font-semibold">Office + Warehousediv>
+          <div className="text-lg font-semibold">Office + Warehouse</div>
           <div className="text-sm text-slate-500 mb-2">Pittsburgh, PA</div>
           <div className="text-sm text-slate-600">$800k • Closed in 18 days</div>
         </div>
