@@ -504,46 +504,46 @@ export default function Page() {
           className="h-56 w-full object-cover"
         />
         <div className="p-6">
-          <div className="text-lg font-semibold">Small Retail Refinance</div>
+          <div className="text-lg font-semibold">Office purchase</div>
           <div className="text-sm text-slate-500 mb-2">Sarasota, FL</div>
           <div className="text-sm text-slate-600">Commercial • $450k • Owner-Occupied</div>
                   </div>
       </div>             
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
         <img
-          src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80"
-          alt="Small townhome rental"
+          src="/deals/Hight MF.jpg"          
+          alt="Multifamily"
           className="h-56 w-full object-cover"
         />
         <div className="p-6">
-          <div className="text-lg font-semibold">Townhome Cash-Out Refinance</div>
-          <div className="text-sm text-slate-500 mb-2">Charlotte, NC</div>
-          <div className="text-sm text-slate-600">DSCR • $285k • Rate/term + cash-out</div>
+          <div className="text-lg font-semibold">Multifamily Purchase</div>
+          <div className="text-sm text-slate-500 mb-2">Ocean City, NJ</div>
+          <div className="text-sm text-slate-600">DSCR • $2.5MM • Purchase </div>
         </div>
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
         <img
-          src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=1200&q=80"
-          alt="Small multi-family building"
+          src="/deals/Stello Foods.jpg"          
+          alt="Mixed-use"
           className="h-56 w-full object-cover"
         />
         <div className="p-6">
-          <div className="text-lg font-semibold">4-Unit Purchase (Local Investor)</div>
-          <div className="text-sm text-slate-500 mb-2">Tampa, FL</div>
-          <div className="text-sm text-slate-600">DSCR • $690k • Closed in 18 days</div>
+          <div className="text-lg font-semibold">Office + Warehousediv>
+          <div className="text-sm text-slate-500 mb-2">Pittsburgh, PA</div>
+          <div className="text-sm text-slate-600">$800k • Closed in 18 days</div>
         </div>
       </div>
 
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
         <img
-          src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"
+          src="/deals/abates pizza.jpg"          
           alt="Small local business storefront"
           className="h-56 w-full object-cover"
         />
         <div className="p-6">
           <div className="text-lg font-semibold">Owner-Occupied Small Business Refi</div>
-          <div className="text-sm text-slate-500 mb-2">Nashville, TN</div>
+          <div className="text-sm text-slate-500 mb-2">New Haven, CT</div>
           <div className="text-sm text-slate-600">Commercial • $780k • Lowered payment</div>
         </div>
       </div>   
