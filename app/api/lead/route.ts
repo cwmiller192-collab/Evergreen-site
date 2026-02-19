@@ -88,11 +88,52 @@ export async function POST(req: Request) {
     });
 
     if (error) {
-      return NextResponse.json({ ok: false, error }, { status: 500 });
-    }
+  return NextResponse.json({ ok: false, error }, { status: 500 });
+}
 
-    return NextResponse.json({ ok: true });
-  } catch (e: any) {
-    return NextResponse.json({ ok: false, error: e?.message || "Unknown error" }, { status: 500 });
+// --- Follow Up Boss (direct integration) ---
+const fubApiKey = process.env.FUB_API_KEY;
+
+if (fubApiKey) {
+  try {
+    const parts = body.fullName.trim().split(/\s+/);
+    const firstName = parts[0] || "";
+    const lastName = parts.slice(1).join(" ");
+
+    const fubRes = await fetch("https://api.followupboss.com/v1/people", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Basic " + Buffer.from(`${fubApiKey}:`).toString("base64"),
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        source: "Website Inquiry",
+        emails: [{ value: body.email }],
+        phones: body.phone ? [{ value: body.phone }] : [],
+        tags: ["Website Lead"],
+        notes: [
+          {
+            body:
+              `Loan Type: ${body.loanType}\n` +
+              `Loan Amount: ${body.loanAmount || "(not provided)"}\n` +
+              `Property State: ${body.propertyState}\n` +
+              `Timeline: ${body.timeline}\n\n` +
+              `Message: ${body.message || "(none)"}`,
+          },
+        ],
+      }),
+    });
+
+    if (!fubRes.ok) {
+      const errText = await fubRes.text();
+      console.error("FUB error:", fubRes.status, errText);
+    }
+  } catch (err) {
+    console.error("FUB integration failed:", err);
   }
 }
+
+return NextResponse.json({ ok: true });
