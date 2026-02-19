@@ -167,8 +167,7 @@ export default function Page() {
   <Button className="rounded-xl" onClick={() => scrollToId("contact")}>
     Apply / Get Pre-Qualified <ArrowRight className="h-4 w-4" />
   </Button>
-</div>
-        
+</div>        
           
      
       </header>
