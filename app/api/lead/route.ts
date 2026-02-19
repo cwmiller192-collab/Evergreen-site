@@ -1,3 +1,4 @@
+
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -137,3 +138,4 @@ if (fubApiKey) {
 }
 
 return NextResponse.json({ ok: true });
+  }
