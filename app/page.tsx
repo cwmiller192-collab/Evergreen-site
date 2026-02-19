@@ -473,8 +473,8 @@ export default function Page() {
     <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
       <div className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
         <img
-          src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=80"
-          alt="Single family home"
+          src="/deals/Baltimore DSCR.jpg"          
+          alt="DSCR 1-4"
           className="h-56 w-full object-cover"
         />
         <div className="p-6">
