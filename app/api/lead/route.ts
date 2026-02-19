@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -27,20 +26,18 @@ export async function POST(req: Request) {
   try {
     const body = (await req.json()) as LeadForm;
 
-    // Basic server-side validation (keep light)
+    // Basic server-side validation
     if (!body?.fullName || !body?.email || !body?.propertyState || !body?.consent) {
       return NextResponse.json({ ok: false, error: "Missing fields" }, { status: 400 });
     }
 
+    // --- Resend email ---
     const resendApiKey = process.env.RESEND_API_KEY;
-    const toEmail = process.env.LEAD_TO_EMAIL || "chris@evgequity.com";
+    const toEmail = process.env.LEAD_TO_EMAIL || "contact@evglending.com";
     const fromEmail = process.env.LEAD_FROM_EMAIL || "Evergreen Leads <onboarding@resend.dev>";
 
     if (!resendApiKey) {
-      return NextResponse.json(
-        { ok: false, error: "Missing RESEND_API_KEY env var" },
-        { status: 500 }
-      );
+      return NextResponse.json({ ok: false, error: "Missing RESEND_API_KEY env var" }, { status: 500 });
     }
 
     const resend = new Resend(resendApiKey);
@@ -67,9 +64,7 @@ export async function POST(req: Request) {
                 <td style="padding:6px 10px; border:1px solid #e5e7eb; font-weight:600; background:#f9fafb;">${escapeHtml(
                   String(k)
                 )}</td>
-                <td style="padding:6px 10px; border:1px solid #e5e7eb;">${escapeHtml(
-                  String(v)
-                )}</td>
+                <td style="padding:6px 10px; border:1px solid #e5e7eb;">${escapeHtml(String(v))}</td>
               </tr>`
             )
             .join("")}
@@ -80,7 +75,7 @@ export async function POST(req: Request) {
       </div>
     `;
 
-    const { error } = await resend.emails.send({
+    const sendResult = await resend.emails.send({
       from: fromEmail,
       to: [toEmail],
       subject,
@@ -88,54 +83,56 @@ export async function POST(req: Request) {
       replyTo: body.email,
     });
 
-    if (error) {
-  return NextResponse.json({ ok: false, error }, { status: 500 });
-}
-
-// --- Follow Up Boss (direct integration) ---
-const fubApiKey = process.env.FUB_API_KEY;
-
-if (fubApiKey) {
-  try {
-    const parts = body.fullName.trim().split(/\s+/);
-    const firstName = parts[0] || "";
-    const lastName = parts.slice(1).join(" ");
-
-    const fubRes = await fetch("https://api.followupboss.com/v1/people", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Basic " + Buffer.from(`${fubApiKey}:`).toString("base64"),
-      },
-      body: JSON.stringify({
-        firstName,
-        lastName,
-        source: "Website Inquiry",
-        emails: [{ value: body.email }],
-        phones: body.phone ? [{ value: body.phone }] : [],
-        tags: ["Website Lead"],
-        notes: [
-          {
-            body:
-              `Loan Type: ${body.loanType}\n` +
-              `Loan Amount: ${body.loanAmount || "(not provided)"}\n` +
-              `Property State: ${body.propertyState}\n` +
-              `Timeline: ${body.timeline}\n\n` +
-              `Message: ${body.message || "(none)"}`,
-          },
-        ],
-      }),
-    });
-
-    if (!fubRes.ok) {
-      const errText = await fubRes.text();
-      console.error("FUB error:", fubRes.status, errText);
+    if (sendResult.error) {
+      return NextResponse.json({ ok: false, error: sendResult.error }, { status: 500 });
     }
-  } catch (err) {
-    console.error("FUB integration failed:", err);
+
+    // --- Follow Up Boss (direct integration) ---
+    const fubApiKey = process.env.FUB_API_KEY;
+
+    if (fubApiKey) {
+      try {
+        const parts = body.fullName.trim().split(/\s+/);
+        const firstName = parts[0] || "";
+        const lastName = parts.slice(1).join(" ");
+
+        const fubRes = await fetch("https://api.followupboss.com/v1/people", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic " + Buffer.from(`${fubApiKey}:`).toString("base64"),
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            source: "Website Inquiry",
+            emails: [{ value: body.email }],
+            phones: body.phone ? [{ value: body.phone }] : [],
+            tags: ["Website Lead"],
+            notes: [
+              {
+                body:
+                  `Loan Type: ${body.loanType}\n` +
+                  `Loan Amount: ${body.loanAmount || "(not provided)"}\n` +
+                  `Property State: ${body.propertyState}\n` +
+                  `Timeline: ${body.timeline}\n\n` +
+                  `Message: ${body.message || "(none)"}`,
+              },
+            ],
+          }),
+        });
+
+        if (!fubRes.ok) {
+          const errText = await fubRes.text();
+          console.error("FUB error:", fubRes.status, errText);
+        }
+      } catch (err) {
+        console.error("FUB integration failed:", err);
+      }
+    }
+
+    return NextResponse.json({ ok: true });
+  } catch (e: any) {
+    return NextResponse.json({ ok: false, error: e?.message || "Unknown error" }, { status: 500 });
   }
 }
-
-return NextResponse.json({ ok: true });
-  }
