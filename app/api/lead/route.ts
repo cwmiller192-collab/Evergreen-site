@@ -98,7 +98,7 @@ export async function POST(req: Request) {
         lastName,
         emails: [{ value: body.email }],
         ...(phone ? { phones: [{ value: phone }] } : {}),
-        tags: ["Website Lead"],
+        tags: ["Website Lead",body.loanType],
       },
       // Event detail — we keep it simple & readable
       message: note,
