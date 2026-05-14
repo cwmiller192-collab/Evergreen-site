@@ -86,7 +86,7 @@ export default function Page() {
     if (!form.fullName.trim()) errs.fullName = "Please enter your name.";
     if (!isEmail(form.email)) errs.email = "Please enter a valid email.";
     const phoneDigits = digitsOnly(form.phone);
-    if (phoneDigits.length > 0 && phoneDigits.length < 10) errs.phone = "Please enter a 10-digit phone number (or leave blank).";
+    if (phoneDigits.length < 10) errs.phone = "Please enter a 10-digit phone number (or leave blank).";
     if (!form.propertyState.trim()) errs.propertyState = "Please enter the property state.";
     if (!form.consent) errs.consent = "Please confirm you consent to be contacted.";
     return { errs, isValid: Object.keys(errs).length === 0 };
