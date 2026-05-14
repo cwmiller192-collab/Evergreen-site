@@ -831,9 +831,10 @@ function LeadFormCard({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone (optional)</Label>
+          <Label htmlFor="phone">Phone *</Label>
           <Input
             id="phone"
+            required
             value={form.phone}
             onChange={(e) => setForm((f) => ({ ...f, phone: formatPhone(e.target.value) }))}
             className={cn(err.phone && "border-red-300")}
@@ -888,7 +889,7 @@ function LeadFormCard({
             value={form.propertyState}
             onChange={(e) => setForm((f) => ({ ...f, propertyState: e.target.value }))}
             className={cn(err.propertyState && "border-red-300")}
-            placeholder="NY"
+            placeholder="State"
             autoComplete="address-level1"
           />
           {err.propertyState ? <p className="text-xs text-red-700">{err.propertyState}</p> : null}
