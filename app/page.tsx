@@ -831,7 +831,7 @@ function LeadFormCard({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="phone">Phone *</Label>
+          <Label htmlFor="phone">Phone </Label>
           <Input
             id="phone"
             required
@@ -872,7 +872,7 @@ function LeadFormCard({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="loanAmount">Desired loan amount (optional)</Label>
+          <Label htmlFor="loanAmount">Desired loan amount </Label>
           <Input
             id="loanAmount"
             value={form.loanAmount}
