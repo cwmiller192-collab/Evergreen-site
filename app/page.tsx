@@ -847,7 +847,7 @@ function LeadFormCard({
 
         <div className="space-y-2">
           <Label>Loan type</Label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="flex gap-2">
             {[
               { v: "DSCR" as const, label: "DSCR" },
               { v: "Commercial" as const, label: "Commercial" },
