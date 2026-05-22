@@ -847,7 +847,7 @@ function LeadFormCard({
 
         <div className="space-y-2">
           <Label>Loan type</Label>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2">
             {[
               { v: "DSCR" as const, label: "DSCR" },
               { v: "Commercial" as const, label: "Commercial" },
@@ -859,7 +859,7 @@ function LeadFormCard({
                   key={o.v}
                   type="button"
                   variant={active ? "solid" : "outline"}
-                  className={cn("rounded-2xl min-w-[120px]", !active && "bg-white")}
+                  className={cn("rounded-2xl text-sm px-3", !active && "bg-white")}
                   onClick={() => setForm((f) => ({ ...f, loanType: o.v }))}
                 >
                   {o.label}
