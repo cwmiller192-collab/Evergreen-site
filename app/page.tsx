@@ -108,7 +108,7 @@ export default function Page() {
       if (!res.ok) throw new Error("Failed");
       setStatus("success");
       setForm(initialForm);
-      setTimeout(() => setStatus("idle"), 4500);
+    window.location.href = "/thank-you";
     } catch {
       setStatus("error");
     }
