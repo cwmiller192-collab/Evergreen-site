@@ -859,7 +859,7 @@ function LeadFormCard({
                   key={o.v}
                   type="button"
                   variant={active ? "solid" : "outline"}
-                  className={cn("rounded-2xl", !active && "bg-white")}
+                  className={cn("rounded-2xl px-6", !active && "bg-white")}
                   onClick={() => setForm((f) => ({ ...f, loanType: o.v }))}
                 >
                   {o.label}
